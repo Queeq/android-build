@@ -254,23 +254,35 @@ For your private configuration with SSH keys and git settings:
    # Set PUBLIC_SSH_KEY="ssh-ed25519 AAAA..."
    ```
 
-3. **Configure git to not track remote**
+3. **Commit your changes**
    ```bash
-   # Commit locally
    git add build.env.example
    git commit -m "Add personal configuration"
-
-   # DO NOT push this branch
-   # It stays local only
    ```
 
-4. **Prevent accidental push**
+4. **Prevent accidental push** (strongly recommended)
    ```bash
-   # Add to .git/config for this branch
-   [branch "my-personal"]
-       remote = .
-       merge = refs/heads/my-personal
+   # Create pre-push hook to block this branch
+   cat > .git/hooks/pre-push << 'EOF'
+#!/bin/bash
+# Pre-push hook to prevent pushing personal branches
+
+while read local_ref local_sha remote_ref remote_sha
+do
+    if [[ "$local_ref" =~ refs/heads/my-personal ]]; then
+        echo "ERROR: Refusing to push 'my-personal' branch (contains personal configuration)"
+        echo "This branch should remain local only."
+        exit 1
+    fi
+done
+
+exit 0
+EOF
+
+   chmod +x .git/hooks/pre-push
    ```
+
+   Replace `my-personal` with your actual branch name if different.
 
 ## Submitting Improvements
 
