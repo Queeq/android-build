@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <!-- These are kept for reference in case we need them again -->
+  <remote name="dmxq-dev" fetch="https://github.com/dmXq-development" revision="lineage-23.0" clone-depth="1" />
+  <remote name="machad3x" fetch="https://github.com/Machad3x" revision="sixteen" clone-depth="1" />
+  <remote name="machad3x-kernel" fetch="https://github.com/Machad3x" revision="lineage-23" clone-depth="1" />
+
+  <!-- Actual remotes that we need -->
+  <remote name="exynoobs" fetch="https://github.com/Exynoobs" revision="lineage-23.0" clone-depth="1" />
+  <remote name="lineageos" fetch="https://github.com/LineageOS" revision="lineage-23.0" clone-depth="1" />
+
+
+  <!-- device -->
+  <project path="device/samsung/dm1q" name="android_device_samsung_dm1q" remote="exynoobs" />
+  <project path="device/samsung/sm8550-common" name="android_device_samsung_sm8550-common" remote="exynoobs" />
+
+  <!-- vendor -->
+  <project path="vendor/samsung/dm1q" name="proprietary_vendor_samsung_dm1q" remote="exynoobs" />
+  <project path="vendor/samsung/sm8550-common" name="proprietary_vendor_samsung_sm8550-common" remote="exynoobs" />
+
+  <!-- kernel -->
+  <project path="kernel/samsung/sm8550" name="android_kernel_samsung_sm8550" remote="exynoobs" />
+  <project path="kernel/samsung/sm8550-modules" name="android_kernel_samsung_sm8550-modules" remote="exynoobs" />
+  <project path="kernel/samsung/sm8550-devicetrees" name="android_kernel_samsung_sm8550-devicetrees" remote="exynoobs" />
+
+  <!-- hardware -->
+  <project path="hardware/samsung" name="android_hardware_samsung" remote="lineageos" />
+
+</manifest>
