@@ -1,0 +1,21 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-local-manifests
+data:
+{{- range $path, $_ := .Files.Glob "manifests/*" }}
+  {{ base $path }}: |
+{{ $.Files.Get $path | indent 4 }}
+{{- end }}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Release.Name }}-hooks
+data:
+{{- range $path, $_ := .Files.Glob "hooks/**/*.sh" }}
+  {{ trimPrefix "hooks/" $path | replace "/" "__" }}: |-
+{{ $.Files.Get $path | indent 4 }}
+{{- end }}

@@ -1,0 +1,30 @@
+helm:
+  maxHistory: 5
+
+replicaCount: 1
+
+image:
+  # Repository is set by Makefile during helm install
+  # Default: ghcr.io/queeq/android-builder
+  repository: ""
+  tag: latest
+  pullPolicy: Always
+
+persistence:
+  enabled: true
+  storageClass: openebs  # Adjust for your cluster (e.g., local-path, standard)
+  size: 600Gi            # Minimum 500GB required
+
+resources:
+  limits:
+    cpu: 8
+    memory: 60Gi         # The more - the better
+  requests:
+    cpu: 4
+    memory: 16Gi         # Minimum requirements
+
+# Manifests are loaded from manifests/ directory
+# Hooks are loaded from hooks/ directory
+# Build configuration is loaded from build.env file (see build.env.example)
+
+

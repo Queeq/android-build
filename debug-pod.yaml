@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: debug-shell
+  namespace: android-build
+  labels:
+    app: debug-shell
+spec:
+  containers:
+  - name: debug
+    image: ubuntu
+    command: ["sleep", "infinity"]
+    volumeMounts:
+    - name: build-storage
+      mountPath: /build
+    securityContext:
+      runAsUser: 0  # Run as root to ensure full access
+  volumes:
+  - name: build-storage
+    persistentVolumeClaim:
+      claimName: android-build-storage

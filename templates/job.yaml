@@ -1,0 +1,43 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-build-{{ now | date "20060102150405" }}
+  labels:
+    app: {{ .Release.Name }}
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: build
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: Always
+          # command: ["sleep", "infinity"]  # for debug
+          volumeMounts:
+            - name: build-storage
+              mountPath: /build
+            - name: local-manifests
+              mountPath: /build/manifests
+            - name: hooks
+              mountPath: /build/hooks
+          env:
+            {{- include "android-build.envVars" . | nindent 12 }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          securityContext:
+            privileged: false
+      volumes:
+        - name: build-storage
+          persistentVolumeClaim:
+            claimName: {{ .Release.Name }}-storage
+        - name: local-manifests
+          configMap:
+            name: {{ .Release.Name }}-local-manifests
+        - name: hooks
+          configMap:
+            name: {{ .Release.Name }}-hooks
+            defaultMode: 0755
+      restartPolicy: Never
